@@ -4,6 +4,8 @@ The applications in this repo are supplementary training materials for the S3-to
 
 Important: these applications use various AWS services and there are costs associated with these services after the Free Tier usage. Please see the [AWS Pricing page](https://aws.amazon.com/pricing/) for details. You are responsible for any AWS costs incurred. No warranty is implied in these examples.
 
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/from-referrer/)
+
 ## Video series
 
 Watch the videos accompanying this repo at this YouTube Playlist:
