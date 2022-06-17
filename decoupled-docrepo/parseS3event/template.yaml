@@ -6,13 +6,13 @@ Description: docrepo-parseS3-event
 Parameters:
   Dept1BucketName:
     Type: String
-    Default: 'patterns-s3-eventbridge-docs1'
+    Default: 'patterns-s3-eventbridge-docs1-jp'
   Dept2BucketName:
     Type: String
-    Default: 'patterns-s3-eventbridge-docs2'
+    Default: 'patterns-s3-eventbridge-docs2-jp'
   Dept3BucketName:
     Type: String
-    Default: 'patterns-s3-eventbridge-docs3'
+    Default: 'patterns-s3-eventbridge-docs3-jp'
 
 Resources:
   # EventBridge rule and permission to invoke Lambda function

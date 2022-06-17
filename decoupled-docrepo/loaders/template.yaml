@@ -2,10 +2,10 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: docrepo-loaders
 
-Parameters:
-  ESdomain:
-    Type: String
-    Default: 'YOUR-ES-ENDPOINT.us-east-1.es.amazonaws.com'
+#Parameters:
+#  ESdomain:
+#    Type: String
+#    Default: 'YOUR-ES-ENDPOINT.us-east-1.es.amazonaws.com'
 
 Resources:
   # EventBridge rules 
@@ -46,8 +46,8 @@ Resources:
       Runtime: nodejs12.x
       Timeout: 5
       MemorySize: 128
-      Environment:
-        Variables:
-          domain: !Ref ESdomain        
+#      Environment:
+#        Variables:
+#          domain: !Ref ESdomain        
  
-        
+       

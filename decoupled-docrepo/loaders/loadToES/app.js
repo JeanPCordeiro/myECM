@@ -17,7 +17,7 @@
 
 const AWS = require('aws-sdk')
 AWS.config.region = process.env.AWS_REGION 
-const { indexDocument } = require('./indexDocument')
+//JPC const { indexDocument } = require('./indexDocument')
 
 // The standard Lambda handler
 exports.handler = async (event) => {
@@ -41,7 +41,7 @@ exports.handler = async (event) => {
     }
  
     console.log('Payload: ', JSON.stringify(payload, null, 2))
-    await indexDocument(payload)
+    //JPC await indexDocument(payload)
 
   } catch (err) {
     console.error(`Handler error: ${err}`)
