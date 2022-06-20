@@ -1,18 +1,18 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: docrepo-parseS3-event
+Description: 'myECM Parse S3 Events'
 
 ## Bucket names - override in sam deploy for custom names
 Parameters:
   Dept1BucketName:
     Type: String
-    Default: 'patterns-s3-eventbridge-docs1-jp'
+    Default: 'myecm-s3-eventbridge-docs1'
   Dept2BucketName:
     Type: String
-    Default: 'patterns-s3-eventbridge-docs2-jp'
+    Default: 'myecm-s3-eventbridge-docs2'
   Dept3BucketName:
     Type: String
-    Default: 'patterns-s3-eventbridge-docs3-jp'
+    Default: 'myecm-s3-eventbridge-docs3'
 
 Resources:
   # EventBridge rule and permission to invoke Lambda function
