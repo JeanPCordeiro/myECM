@@ -1,14 +1,13 @@
-# Serverless ECM
+# Serverless ECM POV
+
+(C) JP.Cordeiro for CATS
 
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/from-referrer/)
 
-This repo contains AWS SAM templates that deploy serverless applications. This application uses Amazon ML services like Comprehend and Rekognition to index documents and images, and then sends the results to the Amazon Elasticsearch Service for fast indexing.
+This repo contains AWS SAM templates that deploy a Proof Of Value for a serverless ECM application. This application uses Amazon ML services like Comprehend and Rekognition to index documents and images, and then sends the results to the Amazon DynamoDB Service for indexing.
 
-The application features are identical to the [Serverless Document Repository repo](https://github.com/jbesw/s3-to-lambda/tree/master/docrepository). This version of the application shows how to split a monolith into smaller applications using an event-based architecture, with Amazon EventBridge as the serverless event bus.
+This application uses an event-based architecture, with Amazon EventBridge as the serverless event bus.
 
-For full details on how this works, read the article at: https://aws.amazon.com/blogs/compute/decoupling-larger-applications-with-amazon-eventbridge/.
-
-Important: this application uses various AWS services and there are costs associated with these services after the Free Tier usage - please see the [AWS Pricing page](https://aws.amazon.com/pricing/) for details. You are responsible for any AWS costs incurred. No warranty is implied in this example.
 
 ```bash
 .
@@ -39,6 +38,7 @@ Important: this application uses various AWS services and there are costs associ
 
 * AWS CLI already configured with Administrator permission
 * [NodeJS 12.x installed](https://nodejs.org/en/download/)
+* You can use GitPod (https://www.gitpod.io/) as you development environment with all this requirements.
 
 ## Installation Instructions
 
@@ -58,18 +58,19 @@ Modify the stack-name or region parameters as needed.
 sam build -u
 sam deploy --guided
 ```
-Follow the prompts in the deploy process to set the stack name, AWS Region, unique bucket names, Elasticsearch domain endpoint, and other parameters.
+Follow the prompts in the deploy process to set the stack name, AWS Region, unique bucket names, DynamoDB domain endpoint, and other parameters.
 
 1. Deploy each of the SAM templates in the analyzers, converters and loaders directly in sequence, using the sam build and sam deploy commands shown in the previous step.
 
 ## How it works
 
-* Ensure you have an Amazon Elasticsearch Service instance running, and have granted permission to the ARN for the "loadToDB" Lambda function in this stack. 
+* Ensure you have an Amazon DynamoDB Service instance running, and have granted permission to the ARN for the "loadToDB" Lambda function in this stack. 
 * Upload PDF, DOCX or JPG files to the target Documents buckets.
-* After a few seconds you will see the index in Elasticsearch has been updated with labels and entities for the object.
+* After a few seconds you will see the index in DynamoDB has been updated with labels and entities for the object.
 
 ==============================================
 
-Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+This application features are extracted from [Serverless Document Repository repo](https://github.com/aws-samples/s3-to-lambda-patterns/tree/master/decoupled-docrepo) provided by Amazon.
+
 
 SPDX-License-Identifier: MIT-0
