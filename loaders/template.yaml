@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'myECM Files Loader'
+
+#Parameters:
+#  ESdomain:
+#    Type: String
+#    Default: 'YOUR-ES-ENDPOINT.us-east-1.es.amazonaws.com'
+
+Resources:
+  # EventBridge rules 
+  EventRuleDBLoader: 
+    Type: AWS::Events::Rule
+    Properties: 
+      Description: "myecm-loader"
+      State: "ENABLED"
+      EventPattern: 
+        source: 
+          - "myecm.analyzers"
+      Targets: 
+        - Arn: 
+            Fn::GetAtt: 
+              - "LoadToDBFunction"
+              - "Arn"
+          Id: "LoadToDB"            
+
+  # EventBridge permissions to invoke Lambda functions
+  PermissionForEventsToInvokeLambda1: 
+    Type: AWS::Lambda::Permission
+    Properties: 
+      FunctionName: 
+        Ref: "LoadToDBFunction"
+      Action: "lambda:InvokeFunction"
+      Principal: "events.amazonaws.com"
+      SourceArn: 
+        Fn::GetAtt: 
+          - "EventRuleDBLoader"
+          - "Arn"
+
+  # Lambda functions
+  LoadToDBFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: loadToDB/
+      Handler: app.handler
+      Runtime: nodejs12.x
+      Timeout: 5
+      MemorySize: 128
+#      Environment:
+#        Variables:
+#          domain: !Ref ESdomain        
+ 
+       

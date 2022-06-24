@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'myECM Parse S3 Events'
+
+## Bucket names - override in sam deploy for custom names
+Parameters:
+  TPBucketName:
+    Type: String
+    Default: 'myecm-s3-tp'
+  BATCHBucketName:
+    Type: String
+    Default: 'myecm-s3-batch'
+
+Resources:
+  # EventBridge rule and permission to invoke Lambda function
+  EventRuleParseS3: 
+    Type: AWS::Events::Rule
+    Properties: 
+      Description: "myecm-parseS3-event"
+      State: "ENABLED"
+      EventPattern: 
+        source: 
+          - "aws.s3"
+        detail: 
+          eventName: 
+            - "PutObject"
+          requestParameters:
+            bucketName:
+              - !Ref TPBucketName
+              - !Ref BATCHBucketName
+      Targets: 
+        - Arn: 
+            Fn::GetAtt: 
+              - "ParseS3eventFunction"
+              - "Arn"
+          Id: "ParseS3"            
+
+  PermissionForEventsToInvokeLambda: 
+    Type: AWS::Lambda::Permission
+    Properties: 
+      FunctionName: 
+        Ref: "ParseS3eventFunction"
+      Action: "lambda:InvokeFunction"
+      Principal: "events.amazonaws.com"
+      SourceArn: 
+        Fn::GetAtt: 
+          - "EventRuleParseS3"
+          - "Arn"
+
+  # Lambda functions
+  ParseS3eventFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: parserFunction/
+      Handler: app.handler
+      Runtime: nodejs12.x
+      Timeout: 5
+      MemorySize: 128
+      Policies:
+        - !Sub 'arn:aws:iam::${AWS::AccountId}:policy/indexation-buckets-read-policy'
+        - Statement:
+          - Effect: Allow
+            Resource: '*'
+            Action:
+              - events:PutEvents           
