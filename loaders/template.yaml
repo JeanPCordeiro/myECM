@@ -46,8 +46,45 @@ Resources:
       Runtime: nodejs12.x
       Timeout: 5
       MemorySize: 128
-#      Environment:
-#        Variables:
-#          domain: !Ref ESdomain        
- 
+      Policies:
+      # Read more about SAM policy templates here
+      # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+       - AWSLambdaExecute
+       - DynamoDBCrudPolicy:
+          TableName: !Ref MyECMDynamoDBTable
+      Environment:
+        Variables:
+          DBTableName: !Ref MyECMDynamoDBTable
+  
+  MyECMDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    Properties:
+      #TableName: MyECMTable
+      AttributeDefinitions:
+        - AttributeName: Id
+          AttributeType: S
+        - AttributeName: Type
+          AttributeType: S
+        - AttributeName: Date
+          AttributeType: S
+      KeySchema:
+        - AttributeName: Id
+          KeyType: HASH
+        - AttributeName: Date
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+      ProvisionedThroughput:
+        ReadCapacityUnits: 0
+        WriteCapacityUnits: 0
+      GlobalSecondaryIndexes:
+        - IndexName: type-index
+          KeySchema:
+            - AttributeName: Type
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 0
+            WriteCapacityUnits: 0
        

@@ -19,29 +19,38 @@ const AWS = require('aws-sdk')
 AWS.config.region = process.env.AWS_REGION 
 //JPC const { indexDocument } = require('./indexDocument')
 
+const docClient = new AWS.DynamoDB.DocumentClient();
+
 // The standard Lambda handler
 exports.handler = async (event) => {
   console.log(JSON.stringify(event, null, 2))
 
+
+
   try {
     // Payload object for ES
     let payload = {
-      id: Date.now(),
-      index: event.detail.type,
-      content: {
-        Key: event.detail.key,
+      TableName : process.env.DBTableName,
+      Item: {
+        Id: event.id,
+        Date: event.time,
+        Type: event.detail.type,
+        File: event.detail.key,
         Bucket: event.detail.bucket,
-        entities: event.detail.entities
+        Entities: event.detail.entities
       }
     }
+    
 
     // Images use labels instead of entities
     if (event["detail-type"] === "NewImage" ) {
-      payload.entities = event.detail.labels
+      payload.Item.Entities = event.detail.labels
     }
  
     console.log('Payload: ', JSON.stringify(payload, null, 2))
     //JPC await indexDocument(payload)
+
+    await docClient.put(payload).promise();
 
   } catch (err) {
     console.error(`Handler error: ${err}`)
