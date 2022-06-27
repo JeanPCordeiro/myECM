@@ -20,6 +20,7 @@ AWS.config.region = process.env.AWS_REGION
 //JPC const { indexDocument } = require('./indexDocument')
 
 const docClient = new AWS.DynamoDB.DocumentClient();
+const s3 = new AWS.S3()
 
 // The standard Lambda handler
 exports.handler = async (event) => {
@@ -36,7 +37,8 @@ exports.handler = async (event) => {
         Date: event.time,
         Type: event.detail.type,
         File: event.detail.key,
-        Bucket: event.detail.bucket,
+        Bucket: process.env.ECSBucketName,
+        SourceBucket: event.detail.bucket,
         Entities: event.detail.entities
       }
     }
@@ -51,6 +53,21 @@ exports.handler = async (event) => {
     //JPC await indexDocument(payload)
 
     await docClient.put(payload).promise();
+
+
+    var params = {
+      CopySource: event.detail.bucket + '/' + event.detail.key,
+      Bucket: process.env.ECSBucketName,
+      Key: event.detail.key
+    };
+    console.log('params: ', JSON.stringify(params, null, 2))
+    await s3.copyObject(params).promise()
+
+
+    var params = {  Bucket: event.detail.bucket, Key: event.detail.key };
+    console.log('params: ', JSON.stringify(params, null, 2))
+    await s3.deleteObject(params).promise()
+
 
   } catch (err) {
     console.error(`Handler error: ${err}`)

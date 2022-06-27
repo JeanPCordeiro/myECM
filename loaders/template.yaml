@@ -7,6 +7,12 @@ Description: 'myECM Files Loader'
 #    Type: String
 #    Default: 'YOUR-ES-ENDPOINT.us-east-1.es.amazonaws.com'
 
+## Bucket names - override in sam deploy for custom names
+Parameters:
+  ECSBucketName:
+    Type: String
+    Default: 'myecm-s3-ecs'
+
 Resources:
   # EventBridge rules 
   EventRuleDBLoader: 
@@ -49,12 +55,14 @@ Resources:
       Policies:
       # Read more about SAM policy templates here
       # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+       - !Sub 'arn:aws:iam::${AWS::AccountId}:policy/indexation-buckets-read-policy'
        - AWSLambdaExecute
        - DynamoDBCrudPolicy:
           TableName: !Ref MyECMDynamoDBTable
       Environment:
         Variables:
           DBTableName: !Ref MyECMDynamoDBTable
+          ECSBucketName: !Ref ECSBucketName
   
   MyECMDynamoDBTable:
     Type: AWS::DynamoDB::Table

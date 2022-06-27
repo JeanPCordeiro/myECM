@@ -11,6 +11,9 @@ Parameters:
   BATCHBucketName:
     Type: String
     Default: 'myecm-s3-batch'
+  ECSBucketName:
+    Type: String
+    Default: 'myecm-s3-ecs'
   LogsBucketName:
     Type: String
     Default: 'myecm-s3-logs'
@@ -25,6 +28,10 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Ref BATCHBucketName
+  ECSBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref ECSBucketName
   LogsBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -97,9 +104,12 @@ Resources:
               - s3:GetBucketLocation
               - s3:GetObjectVersion
               - s3:GetLifecycleConfiguration
+              - s3:PutObject
+              - s3:DeleteObject
             Resource:
               - !Sub 'arn:aws:s3:::${TPBucket}/*'
               - !Sub 'arn:aws:s3:::${BATCHBucket}/*'
+              - !Sub 'arn:aws:s3:::${ECSBucket}/*'
 
 ## Outputs
 Outputs: 
@@ -109,6 +119,9 @@ Outputs:
   BATCHBucketName:
     Description: BATCH Indexation Bucket
     Value: !Ref BATCHBucket
+  ECSBucketName:
+    Description: ECS Storage Bucket
+    Value: !Ref ECSBucket
   LogsBucketName:
     Description: Logs Bucket 
     Value: !Ref LogsBucket      
