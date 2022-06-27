@@ -12,7 +12,7 @@ Resources:
   EventRuleDBLoader: 
     Type: AWS::Events::Rule
     Properties: 
-      Description: "myecm-loader"
+      Description: "myECM load to DB"
       State: "ENABLED"
       EventPattern: 
         source: 

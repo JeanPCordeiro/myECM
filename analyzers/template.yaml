@@ -7,7 +7,7 @@ Resources:
   EventRuleAnalyzeText: 
     Type: AWS::Events::Rule
     Properties: 
-      Description: "myecm-analyzers-text"
+      Description: "myECM analyze text"
       State: "ENABLED"
       EventPattern: 
         source: 
@@ -24,7 +24,7 @@ Resources:
   EventRuleAnalyzeImage: 
     Type: AWS::Events::Rule
     Properties: 
-      Description: "myecm-analyzers-image"
+      Description: "myECM analyze image"
       State: "ENABLED"
       EventPattern: 
         source: 

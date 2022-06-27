@@ -7,7 +7,7 @@ Resources:
   EventRulePDF: 
     Type: AWS::Events::Rule
     Properties: 
-      Description: "myecm-converters-pdf"
+      Description: "myECM converter pdf"
       State: "ENABLED"
       EventPattern: 
         source: 
@@ -27,7 +27,7 @@ Resources:
   EventRuleDOCX: 
     Type: AWS::Events::Rule
     Properties: 
-      Description: "docrepo-converters-docx"
+      Description: "myECM converter docx"
       State: "ENABLED"
       EventPattern: 
         source: 
