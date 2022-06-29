@@ -12,26 +12,21 @@ This application uses an event-based architecture, with Amazon EventBridge as th
 ```bash
 .
 ├── README.MD                   <-- This instructions file
+├── template.yaml               <-- SAM template for Application
 ├── analyzers                   <-- Source code for Lambda functions
 │   └── analyzeText             <-- Text analyzer
 │   └── analyzeImage            <-- Image analyzer
-│   └── template.yaml           <-- SAM template for Analyzers
 │   └── package.json            <-- NodeJS dependencies and scripts
 ├── converters                  <-- Source code for Lambda functions
 │   └── processDOCX             <-- Converts DOCX file into text
 │   └── processPDF              <-- Converts PDF files into text
-│   └── template.yaml           <-- SAM template for Converters
 │   └── package.json            <-- NodeJS dependencies and scripts
 ├── loaders                     <-- Source code for Lambda functions
-│   └── loadToDB                <-- Load indexing info into ES
-│   └── template.yaml           <-- SAM template for Loaders
+│   └── loadToDB                <-- Load indexing info into DB and target bucket
 │   └── package.json            <-- NodeJS dependencies and scripts
 ├── parser                      <-- Source code for a lambda function
-│   └── parserFunction          <-- Main Lambda handler
-│   └── template.yaml           <-- SAM template for Parser
+│   └── parserFunction          <-- Parses input bucket 
 │   └── package.json            <-- NodeJS dependencies and scripts
-├── global                      <-- Source code for a lambda function
-│   └── template.yaml           <-- SAM template for basic application
 ```
 
 ## Requirements
