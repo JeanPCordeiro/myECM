@@ -97,7 +97,6 @@ Resources:
   # Lambda functions
   ParseS3eventFunction:
     Type: AWS::Serverless::Function
-    DependsOn: MyManagedPolicy
     Properties:
       CodeUri: parser/parserFunction/
       Handler: app.handler
@@ -105,7 +104,7 @@ Resources:
       Timeout: 5
       MemorySize: 128
       Policies:
-        - !Sub 'arn:aws:iam::${AWS::AccountId}:policy/indexation-buckets-read-policy'
+        - !Ref MyManagedPolicy
         - Statement:
           - Effect: Allow
             Resource: '*'
@@ -191,7 +190,7 @@ Resources:
       Timeout: 15
       MemorySize: 512
       Policies:
-        - !Sub 'arn:aws:iam::${AWS::AccountId}:policy/indexation-buckets-read-policy'
+        - !Ref MyManagedPolicy
         - Statement:
           - Effect: Allow
             Resource: '*'
@@ -207,7 +206,7 @@ Resources:
       Timeout: 15
       MemorySize: 512
       Policies:
-        - !Sub 'arn:aws:iam::${AWS::AccountId}:policy/indexation-buckets-read-policy'
+        - !Ref MyManagedPolicy
         - Statement:
           - Effect: Allow
             Resource: '*'
@@ -320,7 +319,7 @@ Resources:
           MaxLabels: 5
           MinConfidence: 70
       Policies:
-        - !Sub 'arn:aws:iam::${AWS::AccountId}:policy/indexation-buckets-read-policy'
+        - !Ref MyManagedPolicy
         - Statement:
           - Effect: Allow
             Resource: '*'
@@ -377,7 +376,7 @@ Resources:
       Policies:
       # Read more about SAM policy templates here
       # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
-       - !Sub 'arn:aws:iam::${AWS::AccountId}:policy/indexation-buckets-read-policy'
+       - !Ref MyManagedPolicy
        - AWSLambdaExecute
        - DynamoDBCrudPolicy:
           TableName: !Ref MyECMDynamoDBTable

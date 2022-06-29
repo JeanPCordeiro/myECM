@@ -21,14 +21,23 @@ Resources:
     Type: AWS::S3::Bucket  
     Properties:
       BucketName: !Ref TPBucketName
+      NotificationConfiguration:
+        EventBridgeConfiguration:
+          EventBridgeEnabled: true
   BATCHBucket:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Ref BATCHBucketName
+      NotificationConfiguration:
+        EventBridgeConfiguration:
+          EventBridgeEnabled: true
   ECSBucket:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Ref ECSBucketName
+      NotificationConfiguration:
+        EventBridgeConfiguration:
+          EventBridgeEnabled: true
 
 # Used by any target functions to access the S3
 # buckets. If more buckets need to be added, add here
@@ -68,11 +77,11 @@ Resources:
       EventPattern: 
         source: 
           - "aws.s3"
-        detail: 
-          eventName: 
-            - "PutObject"
-          requestParameters:
-            bucketName:
+        detail-type:
+          - "Object Created"        
+        detail:
+          bucket:
+            name:
               - !Ref TPBucketName
               - !Ref BATCHBucketName
       Targets: 

@@ -26,7 +26,7 @@ exports.handler = async (event) => {
   console.log(JSON.stringify(event, null, 2))
 
   // Incoming key is URL encoded
-  const key = decodeURIComponent(event.detail.requestParameters.key.replace(/\+/g, ' '))
+  const key = decodeURIComponent(event.detail.object.key.replace(/\+/g, ' '))
 
   // Prepare outgoing event
   const params = {
@@ -35,7 +35,7 @@ exports.handler = async (event) => {
       DetailType: 'PutObject',
       EventBusName: 'default',
       Detail: JSON.stringify({
-        bucket: event.detail.requestParameters.bucketName,
+        bucket: event.detail.bucket.name,
         key,
         type: key.split('.')[1]
       })
