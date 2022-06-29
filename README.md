@@ -46,27 +46,18 @@ This application uses an event-based architecture, with Amazon EventBridge as th
 
 1. Clone the repo onto your local development machine using `git clone`.
 
-1. From the command line, change directory into the global folder, then run:
-```
-sam package --output-template-file packaged.yaml --s3-bucket myecm-global
-sam deploy --template-file packaged.yaml --capabilities CAPABILITY_NAMED_IAM --stack-name myecm-global --region eu-west-1
-```
-Modify the stack-name or region parameters as needed.
-
-1. Change directory into the parser directory, then run:
+1. Then run:
 ``` 
 sam build -u
-sam deploy --guided
+sam deploy --guided --capabilities CAPABILITY_NAMED_IAM
 ```
 Follow the prompts in the deploy process to set the stack name, AWS Region, unique bucket names, DynamoDB domain endpoint, and other parameters.
 
-1. Deploy each of the SAM templates in the analyzers, converters and loaders directly in sequence, using the sam build and sam deploy commands shown in the previous step.
 
 ## How it works
 
-* Ensure you have an Amazon DynamoDB Service instance running, and have granted permission to the ARN for the "loadToDB" Lambda function in this stack. 
-* Upload PDF, DOCX or JPG files to the target Documents buckets.
-* After a few seconds you will see the index in DynamoDB has been updated with labels and entities for the object.
+* Upload PDF, DOCX or JPG, PNG files to the TP or BATCH buckets.
+* After a few seconds you will see the index in DynamoDB has been updated with labels and entities for the object and the files moved to the ECS bucket.
 
 ==============================================
 
