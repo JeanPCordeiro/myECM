@@ -31,13 +31,11 @@ This application uses an event-based architecture, with Amazon EventBridge as th
 
 ## Requirements
 
-* AWS CLI already configured with Administrator permission
+* AWS and AWS SAM CLI configured with Administrator permission
 * [NodeJS 12.x installed](https://nodejs.org/en/download/)
 * You can use GitPod (https://www.gitpod.io/) as you development environment with all this requirements.
 
 ## Installation Instructions
-
-1. [Create an AWS account](https://portal.aws.amazon.com/gp/aws/developer/registration/index.html) if you do not already have one and login.
 
 1. Clone the repo onto your local development machine using `git clone`.
 
