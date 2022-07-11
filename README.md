@@ -47,7 +47,11 @@ sam deploy --guided --capabilities CAPABILITY_NAMED_IAM
 Follow the prompts in the deploy process to set the stack name, AWS Region, unique bucket names, DynamoDB domain endpoint, and other parameters.
 
 
+aws s3 sync ACQsite/. s3://myecm-s3-acq
+
 Acquisition URL : https://myecm-s3-acq.s3-eu-west-1.amazonaws.com/index.html
+
+aws s3 rm s3://bucket-name --recursive
 
 ## How it works
 

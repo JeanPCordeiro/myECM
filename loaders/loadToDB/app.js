@@ -58,7 +58,7 @@ exports.handler = async (event) => {
     var params = {
       CopySource: event.detail.bucket + '/' + event.detail.key,
       Bucket: process.env.ECSBucketName,
-      Key: event.detail.key
+      Key: event.id+'-'+event.detail.key
     };
     console.log('params: ', JSON.stringify(params, null, 2))
     await s3.copyObject(params).promise()
