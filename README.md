@@ -47,6 +47,8 @@ sam deploy --guided --capabilities CAPABILITY_NAMED_IAM
 Follow the prompts in the deploy process to set the stack name, AWS Region, unique bucket names, DynamoDB domain endpoint, and other parameters.
 
 
+Acquisition URL : https://myecm-s3-acq.s3-eu-west-1.amazonaws.com/index.html
+
 ## How it works
 
 * Upload PDF, DOCX or JPG, PNG files to the TP or BATCH buckets.

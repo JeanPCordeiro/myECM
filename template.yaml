@@ -14,6 +14,9 @@ Parameters:
   ECSBucketName:
     Type: String
     Default: 'myecm-s3-ecs'
+  ACQBucketName:
+    Type: String
+    Default: 'myecm-s3-acq'
 
 ## S3 buckets
 Resources:
@@ -24,6 +27,30 @@ Resources:
       NotificationConfiguration:
         EventBridgeConfiguration:
           EventBridgeEnabled: true
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - '*'
+            AllowedMethods:
+              - GET
+              - HEAD
+              - POST
+              - PUT
+              - DELETE
+            AllowedOrigins:
+              - !Join [ "", [ "https://", !Ref ACQBucketName, ".s3-", !Ref "AWS::Region" , ".amazonaws.com" ] ]
+            ExposedHeaders:
+              - Date
+              - ETag
+              - x-amz-meta-custom-header
+              - x-amz-server-side-encryption
+              - x-amz-request-id
+              - x-amz-id-2
+            MaxAge: 3600
+
+
+
+
   BATCHBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -35,9 +62,50 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Ref ECSBucketName
-      NotificationConfiguration:
-        EventBridgeConfiguration:
-          EventBridgeEnabled: true
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - '*'
+            AllowedMethods:
+              - GET
+              - HEAD
+              - POST
+              - PUT
+              - DELETE
+            AllowedOrigins:
+              - !Join [ "", [ "https://", !Ref ACQBucketName, ".s3-", !Ref "AWS::Region" , ".amazonaws.com" ] ]
+            ExposedHeaders:
+              - Date
+              - ETag
+              - x-amz-meta-custom-header
+              - x-amz-server-side-encryption
+              - x-amz-request-id
+              - x-amz-id-2
+            MaxAge: 3600
+
+  ACQBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref ACQBucketName
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+      AccessControl: PublicRead
+
+
+  ACQHostingBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ACQBucket
+      PolicyDocument:
+        Id: MyPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: "*"
+            Action: "s3:GetObject"
+            Resource: !Sub "arn:aws:s3:::${ACQBucket}/*"
 
 # Used by any target functions to access the S3
 # buckets. If more buckets need to be added, add here
@@ -425,4 +493,19 @@ Resources:
           ProvisionedThroughput:
             ReadCapacityUnits: 0
             WriteCapacityUnits: 0
-       
+
+
+Outputs:
+  WebsiteURL:
+    Value: !GetAtt
+      - ACQBucket
+      - WebsiteURL
+    Description: URL for ACQuisition website hosted on S3
+  S3BucketSecureURL:
+    Value: !Join
+      - ''
+      - - 'https://'
+        - !GetAtt
+          - ACQBucket
+          - DomainName
+    Description: Name of S3 bucket to hold website content
