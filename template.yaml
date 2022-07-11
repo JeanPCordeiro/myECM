@@ -48,9 +48,6 @@ Resources:
               - x-amz-id-2
             MaxAge: 3600
 
-
-
-
   BATCHBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -58,6 +55,27 @@ Resources:
       NotificationConfiguration:
         EventBridgeConfiguration:
           EventBridgeEnabled: true
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - '*'
+            AllowedMethods:
+              - GET
+              - HEAD
+              - POST
+              - PUT
+              - DELETE
+            AllowedOrigins:
+              - !Join [ "", [ "https://", !Ref ACQBucketName, ".s3-", !Ref "AWS::Region" , ".amazonaws.com" ] ]
+            ExposedHeaders:
+              - Date
+              - ETag
+              - x-amz-meta-custom-header
+              - x-amz-server-side-encryption
+              - x-amz-request-id
+              - x-amz-id-2
+            MaxAge: 3600
+
   ECSBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -91,7 +109,6 @@ Resources:
         IndexDocument: index.html
         ErrorDocument: error.html
       AccessControl: PublicRead
-
 
   ACQHostingBucketPolicy:
     Type: AWS::S3::BucketPolicy
@@ -247,7 +264,7 @@ Resources:
 
   PermissionForEventsToInvokeLambdaDOCX: 
     Type: AWS::Lambda::Permission
-    Properties: 
+    Properties:
       FunctionName: 
         Ref: "ProcessDOCXFunction"
       Action: "lambda:InvokeFunction"
