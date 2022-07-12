@@ -53,6 +53,8 @@ aws s3 sync ACQsite/. s3://myecm-s3-acq
 to install acquisition website.
 The Acquisition URL will be : https://myecm-s3-acq.s3-eu-west-1.amazonaws.com/index.html
 
+You can also use Provion and decommission scripts ti fully automate the processus.
+
 ## How it works
 
 * Upload PDF, DOCX or JPG, PNG files to the TP or BATCH buckets.
