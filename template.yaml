@@ -42,6 +42,7 @@ Resources:
               - DELETE
             AllowedOrigins:
               - !Join [ "", [ "https://", !Ref ACQBucketName, ".s3-", !Ref "AWS::Region" , ".amazonaws.com" ] ]
+              - !Join [ "", [ "https://", !Ref ACQBucketName, ".s3.amazonaws.com" ] ]
             ExposedHeaders:
               - Date
               - ETag
@@ -70,6 +71,7 @@ Resources:
               - DELETE
             AllowedOrigins:
               - !Join [ "", [ "https://", !Ref ACQBucketName, ".s3-", !Ref "AWS::Region" , ".amazonaws.com" ] ]
+              - !Join [ "", [ "https://", !Ref ACQBucketName, ".s3.amazonaws.com" ] ]
             ExposedHeaders:
               - Date
               - ETag
@@ -95,6 +97,7 @@ Resources:
               - DELETE
             AllowedOrigins:
               - !Join [ "", [ "https://", !Ref ACQBucketName, ".s3-", !Ref "AWS::Region" , ".amazonaws.com" ] ]
+              - !Join [ "", [ "https://", !Ref ACQBucketName, ".s3.amazonaws.com" ] ]
             ExposedHeaders:
               - Date
               - ETag
@@ -539,6 +542,39 @@ Resources:
             ReadCapacityUnits: 0
             WriteCapacityUnits: 0
 
+  # Lambda functions
+  ScanAPIFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: api/
+      Handler: app.handler
+      Runtime: nodejs12.x
+      Timeout: 5
+      MemorySize: 128
+      Policies:
+      # Read more about SAM policy templates here
+      # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+       - !Ref MyManagedPolicy
+       - AWSLambdaExecute
+       - DynamoDBCrudPolicy:
+          TableName: !Ref MyECMDynamoDBTable
+      Environment:
+        Variables:
+          DBTableName: !Ref MyECMDynamoDBTable
+
+  ScanAPIFunctionPermissions:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref ScanAPIFunction
+      Action: lambda:InvokeFunctionUrl
+      Principal: "*"
+      FunctionUrlAuthType: NONE
+  
+  ScanAPIFunctionUrl:
+    Type: AWS::Lambda::Url
+    Properties:
+      TargetFunctionArn: !Ref ScanAPIFunction
+      AuthType: NONE
 
 Outputs:
   WebsiteURL:
@@ -554,3 +590,4 @@ Outputs:
           - ACQBucket
           - DomainName
     Description: Name of S3 bucket to hold website content
+

@@ -1,0 +1,12 @@
+{
+  "name": "load-to-es",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "James Beswick",
+  "license": "MIT-0",
+  "dependencies": {
+    "aws-sdk": "latest"
+  }
+}
