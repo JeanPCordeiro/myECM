@@ -17,6 +17,9 @@ Parameters:
   ACQBucketName:
     Type: String
     Default: 'myecm-s3-acq'
+  VIEWBucketName:
+    Type: String
+    Default: 'myecm-s3-view'
 
 ## S3 buckets
 Resources:
@@ -123,6 +126,31 @@ Resources:
             Principal: "*"
             Action: "s3:GetObject"
             Resource: !Sub "arn:aws:s3:::${ACQBucket}/*"
+
+
+  VIEWBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref VIEWBucketName
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+      AccessControl: PublicRead
+
+  VIEWHostingBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref VIEWBucket
+      PolicyDocument:
+        Id: MyPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: "*"
+            Action: "s3:GetObject"
+            Resource: !Sub "arn:aws:s3:::${VIEWBucket}/*"
+
 
 # Used by any target functions to access the S3
 # buckets. If more buckets need to be added, add here
