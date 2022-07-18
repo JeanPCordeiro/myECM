@@ -6,9 +6,9 @@ echo
 
 echo "Build Artifacts"
 sam build
-#pushd viewsite
-#npm run build
-#popd
+pushd viewsite
+npm run build
+popd
 
 echo
 echo "Deploy Stack"
@@ -18,6 +18,6 @@ echo
 echo "Sync S3 Acquisition WebSite"
 aws s3 sync ACQsite/. s3://myecm-s3-acq
 
-#echo
-#echo "Sync S3 View WebSite"
-#aws s3 sync viewsite/build/. s3://myecm-s3-view
+echo
+echo "Sync S3 View WebSite"
+aws s3 sync viewsite/build/. s3://myecm-s3-view

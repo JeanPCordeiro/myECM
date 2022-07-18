@@ -14,3 +14,5 @@ RUN pip install cfn-lint
 RUN brew install tfsec
 
 RUN npm install -g serverless
+
+RUN npm install -g create-react-app

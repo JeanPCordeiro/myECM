@@ -575,6 +575,10 @@ Resources:
     Properties:
       TargetFunctionArn: !Ref ScanAPIFunction
       AuthType: NONE
+      Cors: 
+        AllowCredentials: false
+        AllowOrigins: 
+          - "*"
 
 Outputs:
   WebsiteURL:

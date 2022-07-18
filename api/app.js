@@ -35,10 +35,16 @@ exports.handler = async (event) => {
     
     
     console.log('Payload: ', JSON.stringify(payload, null, 2))
-
+    let count=0;
+    const scanResults = [];
     const data = await docClient.scan(payload).promise();
-
-    return { data }
+    console.log("Scan succeeded.");
+    data.Items.forEach(function(itemdata) {
+      console.log("Item :", ++count,JSON.stringify(itemdata));
+      scanResults.push(itemdata);
+   });
+   console.log("Scan succeeded.");
+    return scanResults;
 
   } catch (err) {
     console.error(`Handler error: ${err}`)
