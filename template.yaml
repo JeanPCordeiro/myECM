@@ -580,6 +580,16 @@ Resources:
         AllowOrigins: 
           - "*"
 
+  ScanAPIUrlParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: ScanAPIUrl
+      Type: String
+      Value: !GetAtt
+        - ScanAPIFunctionUrl
+        - FunctionUrl
+      Description: Scan API Lambda Function URL
+
 Outputs:
   WebsiteURL:
     Value: !GetAtt
@@ -594,4 +604,9 @@ Outputs:
           - ACQBucket
           - DomainName
     Description: Name of S3 bucket to hold website content
+  ScanAPIURL:
+    Value: !GetAtt
+      - ScanAPIFunctionUrl
+      - FunctionUrl
+    Description: URL for Scan API
 

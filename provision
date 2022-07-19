@@ -6,9 +6,6 @@ echo
 
 echo "Build Artifacts"
 sam build
-pushd viewsite
-npm run build
-popd
 
 echo
 echo "Deploy Stack"
@@ -17,6 +14,15 @@ sam deploy --capabilities CAPABILITY_NAMED_IAM --stack-name myecm --resolve-s3
 echo
 echo "Sync S3 Acquisition WebSite"
 aws s3 sync ACQsite/. s3://myecm-s3-acq
+
+echo
+echo "Build View Site"
+pushd viewsite
+myURL=$(aws ssm get-parameter --name ScanAPIUrl  | jq -r '.Parameter.Value')
+sed -i "/.get(/c\    .get('${myURL}')" src/FeaturedProducts.js
+npm install
+npm run build
+popd
 
 echo
 echo "Sync S3 View WebSite"
