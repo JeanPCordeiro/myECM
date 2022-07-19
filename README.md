@@ -49,11 +49,21 @@ Follow the prompts in the deploy process to set the stack name, AWS Region, uniq
 Once completed, run 
 ``` 
 aws s3 sync ACQsite/. s3://myecm-s3-acq
-```
-to install acquisition website.
-The Acquisition URL will be : https://myecm-s3-acq.s3-eu-west-1.amazonaws.com/index.html
 
-You can also use Provion and decommission scripts ti fully automate the processus.
+pushd viewsite
+myURL=$(aws ssm get-parameter --name ScanAPIUrl  | jq -r '.Parameter.Value')
+sed -i "/.get(/c\    .get('${myURL}')" src/FeaturedDocuments.js
+npm install
+npm run build
+popd
+
+aws s3 sync viewsite/build/. s3://myecm-s3-view
+```
+to install acquisition and viewer website.
+The Acquisition URL will be : https://myecm-s3-acq.s3-eu-west-1.amazonaws.com/index.html
+The Acquisition URL will be : https://myecm-s3-view.s3-eu-west-1.amazonaws.com/index.html
+
+You can also use provision and decommission scripts to fully automate the processus.
 
 ## How it works
 
