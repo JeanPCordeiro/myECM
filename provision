@@ -19,7 +19,7 @@ echo
 echo "Build View Site"
 pushd viewsite
 myURL=$(aws ssm get-parameter --name ScanAPIUrl  | jq -r '.Parameter.Value')
-sed -i "/.get(/c\    .get('${myURL}')" src/FeaturedProducts.js
+sed -i "/.get(/c\    .get('${myURL}')" src/FeaturedDocuments.js
 npm install
 npm run build
 popd

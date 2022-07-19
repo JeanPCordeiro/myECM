@@ -1,9 +1,9 @@
-import FeaturedProducts from './FeaturedProducts';
+import FeaturedDocuments from './FeaturedDocuments';
 import './App.css';
 function App() {
   return (
     <div className='App'>
-      <FeaturedProducts />
+      <FeaturedDocuments />
     </div>
   );
 }
