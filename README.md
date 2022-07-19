@@ -60,7 +60,9 @@ popd
 aws s3 sync viewsite/build/. s3://myecm-s3-view
 ```
 to install acquisition and viewer website.
+
 The Acquisition URL will be : https://myecm-s3-acq.s3-eu-west-1.amazonaws.com/index.html
+
 The Acquisition URL will be : https://myecm-s3-view.s3-eu-west-1.amazonaws.com/index.html
 
 You can also use provision and decommission scripts to fully automate the processus.
