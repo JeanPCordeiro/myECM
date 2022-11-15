@@ -5,11 +5,12 @@ echo "Provision myECM stack"
 echo
 
 echo "Build Artifacts"
-sam build
+sam build -u
 
 echo
 echo "Deploy Stack"
-sam deploy --capabilities CAPABILITY_NAMED_IAM --stack-name myecm --resolve-s3
+aws s3api create-bucket --bucket myecm-deploy --region us-east-1
+sam deploy --capabilities CAPABILITY_NAMED_IAM --stack-name myecm --s3-bucket myecm-deploy
 
 echo
 echo "Sync S3 Acquisition WebSite"
