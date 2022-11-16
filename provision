@@ -5,7 +5,7 @@ echo "Provision myECM stack"
 echo
 
 echo "Build Artifacts"
-sam build -u
+sam build
 
 echo
 echo "Deploy Stack"

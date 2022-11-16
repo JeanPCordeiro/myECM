@@ -24,6 +24,7 @@ return (
           <div className='card' key={document.Id}>
             <h3>{document.Id}</h3>
             <p>{document.File}</p>
+            <p>{document.Entities.name}</p>
           </div>
         ))}
       </div>
