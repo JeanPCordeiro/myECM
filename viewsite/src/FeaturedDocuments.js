@@ -7,7 +7,7 @@ useEffect(() => {
 }, []);
 const fetchDocuments = () => {
   axios
-    .get('https://wlzrefvumum4rxdnyb767w54xu0xvcpe.lambda-url.eu-west-1.on.aws/')
+    .get('https://gzaltnmysxcm4vov3udhj27n4i0kyvdl.lambda-url.eu-west-1.on.aws/')
     .then((res) => {
       console.log(res);
       setDocuments(res.data);
